@@ -1,19 +1,23 @@
 package com.capg.employeepayroll;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
-import org.junit.Before;
+import java.util.List;
+
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 public class TestEmployeePayrollService {
-
-	@Before
-	public void setUp() throws Exception {
+	static EmployeePayrollServiceDB serviceObj;
+	@BeforeClass
+	public static void setUp()  {
+		serviceObj = new EmployeePayrollServiceDB();
 	}
 
 	@Test
-	public void test() {
-		fail("Not yet implemented");
+	public void givenEmpPayrollDB_WhenRetrieved_ShouldMatchEmpCount() throws DBServiceException{
+		List<EmployeePayrollData> empPayrollList = serviceObj.viewEmployeePayroll();
+		assertEquals(3, empPayrollList.size());
 	}
 
 }
