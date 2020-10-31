@@ -1,6 +1,7 @@
 package com.capg.employeepayroll;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.util.List;
 
@@ -18,6 +19,13 @@ public class TestEmployeePayrollService {
 	public void givenEmpPayrollDB_WhenRetrieved_ShouldMatchEmpCount() throws DBServiceException{
 		List<EmployeePayrollData> empPayrollList = serviceObj.viewEmployeePayroll();
 		assertEquals(3, empPayrollList.size());
+	}
+	
+	@Test
+	public void givenUpdatedSalary_WhenRetrieved_ShouldBeSyncedWithDB() throws DBServiceException{
+		serviceObj.updateEmployeeSalary("Terisa", 3000000);
+		boolean isSynced = serviceObj.isEmpPayrollSyncedWithDB("Terisa");
+		assertTrue(isSynced);
 	}
 
 }
