@@ -22,10 +22,16 @@ public class TestEmployeePayrollService {
 	}
 	
 	@Test
-	public void givenUpdatedSalary_WhenRetrieved_ShouldBeSyncedWithDB() throws DBServiceException{
-		serviceObj.updateEmployeeSalary("Terisa", 3000000.0);
+	public void givenUpdatedSalary_WhenRetrieved_ShouldBeSyncedWithDBUsingStatement() throws DBServiceException{
+		serviceObj.updateEmployeeSalaryUsingStatement("Terisa", 3000000.0);
 		boolean isSynced = serviceObj.isEmpPayrollSyncedWithDB("Terisa");
 		assertTrue(isSynced);
 	}
-
+	
+	@Test
+	public void givenUpdatedSalary_WhenRetrieved_ShouldBeSyncedWithDBUsingPreparedStatement() throws DBServiceException{
+		serviceObj.updateEmployeeSalaryUsingPreparedStatement("Terisa", 3000000.0);
+		boolean isSynced = serviceObj.isEmpPayrollSyncedWithDB("Terisa");
+		assertTrue(isSynced);
+	}
 }

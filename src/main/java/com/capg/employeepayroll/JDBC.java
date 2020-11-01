@@ -9,6 +9,9 @@ public class JDBC {
 	static String password = "RajanRKG@0909";
 	private static Connection con = null;
 	
+	/**
+	 * UC1
+	 */
 	public static Connection getConnection()
 	{
 		try {
