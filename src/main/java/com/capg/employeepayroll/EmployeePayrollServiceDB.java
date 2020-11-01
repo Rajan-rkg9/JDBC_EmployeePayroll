@@ -1,20 +1,21 @@
 package com.capg.employeepayroll;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+
 public class EmployeePayrollServiceDB {
-	List<EmployeePayrollData> employeePayrollList;
 	EmployeePayrollData empDataObj = null;
 	/**
 	 *UC2
 	 */
 	public List<EmployeePayrollData> viewEmployeePayroll() throws DBServiceException
 	{
-		employeePayrollList = new ArrayList<>();
+		List<EmployeePayrollData> employeePayrollList = new ArrayList<>();
 		String query = "select * from Employee_Payroll";
 		try(Connection con = new JDBC().getConnection()) {
 			Statement statement = con.createStatement();
@@ -114,5 +115,32 @@ public class EmployeePayrollServiceDB {
 			throw new DBServiceException("SQL Exception", DBServiceExceptionType.SQL_EXCEPTION);
 		}
 		return false;
+	}
+	/**
+	 *UC5
+	 */
+	public List<EmployeePayrollData> viewEmployeePayrollByJoinDateRange(LocalDate startDate , LocalDate endDate) throws DBServiceException
+	{
+		List<EmployeePayrollData> employeePayrollListByStartDate = new ArrayList<>();
+		String query = "select * from Employee_Payroll where start_date between ? and  ?";
+		try(Connection con = new JDBC().getConnection()) {
+			PreparedStatement preparedStatement = con.prepareStatement(query);
+			preparedStatement.setDate(1, Date.valueOf(startDate));
+			preparedStatement.setDate(2, Date.valueOf(endDate));
+			ResultSet resultSet = preparedStatement.executeQuery();
+			while(resultSet.next())
+			{
+				int id = resultSet.getInt(1);
+				String name = resultSet.getString(2);
+				String gender = resultSet.getString(3);
+				double salary = resultSet.getDouble(4);
+				LocalDate start = resultSet.getDate(5).toLocalDate();
+				empDataObj = new EmployeePayrollData(id, name, gender ,salary,start);
+				employeePayrollListByStartDate.add(empDataObj);
+			}
+		} catch (Exception e) {
+			throw new DBServiceException("SQL Exception", DBServiceExceptionType.SQL_EXCEPTION);
+		}
+		return employeePayrollListByStartDate;
 	}
 }
