@@ -59,7 +59,7 @@ public class TestEmployeePayrollService {
 	@Test
 	public void givenEmployeeDB_WhenRetrievedAvg_ShouldReturnAvgByGroupedGender() throws DBServiceException {
 		empDataByGender = serviceObj.viewEmployeeDataGroupedByGender("salary" , "avg");
-		assertEquals(2000000, empDataByGender.get("M"), 0.0);
+		assertEquals(3000000, empDataByGender.get("M"), 0.0);
 		assertEquals(3000000, empDataByGender.get("F"), 0.0);
 	}
 
@@ -82,5 +82,12 @@ public class TestEmployeePayrollService {
 		empDataByGender = serviceObj.viewEmployeeDataGroupedByGender("salary", "count");
 		assertEquals(2, empDataByGender.get("M"), 0.0);
 		assertEquals(1, empDataByGender.get("F"), 0.0);
+	}
+	
+	@Test
+	public void insertedNewEmployee_WhenRetrieved_ShouldBeSyncedWithDB() throws DBServiceException{
+		serviceObj.insertNewEmployeeToDB("Mark" , "M", 5000000.0 , LocalDate.now());
+		boolean isSynced = serviceObj.isEmpPayrollSyncedWithDB("Mark");
+		assertTrue(isSynced);
 	}
 }
