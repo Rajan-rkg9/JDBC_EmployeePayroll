@@ -4,9 +4,15 @@ import java.time.LocalDate;
 
 public class EmployeePayrollData {
 	private int emp_id;
+	private int id;
 	private String name;
 	private String gender;
 	private double salary;
+	private double basic_pay;
+	private double deductions;
+	private double taxable_pay;
+	private double tax;
+	private double net_pay;
 	private LocalDate start_date;
 	
 	public EmployeePayrollData(int emp_id, String name, String gender , double salary, LocalDate start) {
@@ -23,9 +29,23 @@ public class EmployeePayrollData {
 	}
 
 
+	public EmployeePayrollData(int emp_id, String name, String gender, double salary, LocalDate start, int id,
+			double basic_pay, double deductions, double taxable_pay, double tax, double net_pay) {
+		this(emp_id,name,gender,salary,start);
+		this.id = id;
+		this.basic_pay = basic_pay;
+		this.deductions = deductions;
+		this.taxable_pay = taxable_pay;
+		this.tax = tax;
+		this.net_pay = net_pay;
+		
+		
+	}
+
 	public int getEmp_id() {
 		return emp_id;
 	}
+	
 	public void setEmp_id(int emp_id) {
 		this.emp_id = emp_id;
 	}

@@ -31,12 +31,12 @@ public class EmployeePayrollServiceDB {
 				double salary = resultSet.getDouble(4);
 				LocalDate start = resultSet.getDate(5).toLocalDate();
 				empDataObj = new EmployeePayrollData(id, name, gender ,salary,start);
-				employeePayrollList.add(empDataObj);	
-				
+				employeePayrollList.add(empDataObj);
 			}
 		} catch (Exception e) {
 			throw new DBServiceException("SQL Exception", DBServiceExceptionType.SQL_EXCEPTION);
 		}
+		System.out.println(employeePayrollList);
 		return employeePayrollList;
 	}
 	/**
@@ -106,11 +106,42 @@ public class EmployeePayrollServiceDB {
 								  .orElse(null);
 	}
 	/**
-	 *UC3,UC4
+	 *UC9
+	 */
+	public List<EmployeePayrollData> viewEmployeeAndPayrollDetailsByName(String name) throws DBServiceException
+	{
+		List<EmployeePayrollData> empPayrollDetailsListByName = new ArrayList<>();
+		String query = "select * from Employee_Payroll , payroll_details where name = ?";
+		try(Connection con = JDBC.getConnection()) {
+			PreparedStatement preparedStatement = con.prepareStatement(query);
+			preparedStatement.setString(1, name );
+			ResultSet resultSet = preparedStatement.executeQuery();
+			if(resultSet.next())
+			{
+				int id = resultSet.getInt(1);
+				String gender = resultSet.getString(3);
+				double salary = resultSet.getDouble(4);
+				LocalDate start = resultSet.getDate(5).toLocalDate();
+				int emp_id = resultSet.getInt(6);
+				double basic_pay = resultSet.getDouble(7);
+				double deductions = resultSet.getDouble(8);
+				double taxable_pay = resultSet.getDouble(9);
+				double tax = resultSet.getDouble(10);
+				double net_pay = resultSet.getDouble(11);
+				empDataObj = new EmployeePayrollData(id, name, gender ,salary,start,emp_id,basic_pay,deductions,taxable_pay,tax,net_pay);
+				empPayrollDetailsListByName.add(empDataObj);
+			}
+		} catch (Exception e) {
+			throw new DBServiceException("SQL Exception", DBServiceExceptionType.SQL_EXCEPTION);
+		}
+		return empPayrollDetailsListByName;
+	}
+	/**
+	 *UC3,UC4,UC9
 	 */
 	public boolean isEmpPayrollSyncedWithDB(String name) throws DBServiceException {
 		try {
-			return viewEmployeePayrollByName(name).get(0).equals(getEmployeePayrollData(name));
+			return viewEmployeeAndPayrollDetailsByName(name).get(0).equals(getEmployeePayrollData(name));
 		} 
 		catch (IndexOutOfBoundsException e) {
 		} 
@@ -166,7 +197,7 @@ public class EmployeePayrollServiceDB {
 		return empDataByGender;
 	}	
 	/**
-	 *UC7
+	 *UC8
 	 */
 	public List<EmployeePayrollData> insertNewEmployeeToDB(String name , String gender , double salary , LocalDate start_date) throws DBServiceException
 	{
@@ -233,5 +264,6 @@ public class EmployeePayrollServiceDB {
 		}
 	return viewEmployeePayroll();
 	}
+	
 }
 
