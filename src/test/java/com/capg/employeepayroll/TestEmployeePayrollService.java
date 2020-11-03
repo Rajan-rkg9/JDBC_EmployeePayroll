@@ -84,14 +84,14 @@ public class TestEmployeePayrollService {
 		assertEquals(2, empDataByGender.get("M"), 0.0);
 		assertEquals(1, empDataByGender.get("F"), 0.0);
 	}
-	@Ignore
 	@Test
 	public void insertedNewEmployee_WhenRetrieved_ShouldBeSyncedWithDB() throws DBServiceException{
-		serviceObj.insertNewEmployeeToDB("Mark" , "M", 5000000.0 , LocalDate.now());
+		serviceObj.insertNewEmployeeToDB("Mark" , "M", 5000000.0 , LocalDate.now() , 1 , "Sales");
+		serviceObj.viewEmployeeAndPayrollDetailsByName("Mark");
 		boolean isSynced = serviceObj.isEmpPayrollSyncedWithDB("Mark");
 		assertTrue(isSynced);
 	}
-	
+	@Ignore
 	@Test
 	public void addedNewEmployee_WhenRetrieved_ShouldReturnPayrollDetailsAndBeSyncedWithDB() throws DBServiceException{
 		serviceObj.viewEmployeeAndPayrollDetailsByName("Mark");

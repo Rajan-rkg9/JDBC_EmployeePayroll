@@ -1,12 +1,15 @@
 package com.capg.employeepayroll;
 
 import java.time.LocalDate;
+import java.util.List;
 
 public class EmployeePayrollData {
 	private int emp_id;
 	private int id;
+	private int company_id;
 	private String name;
 	private String gender;
+	private String dept_name;
 	private double salary;
 	private double basic_pay;
 	private double deductions;
@@ -16,21 +19,25 @@ public class EmployeePayrollData {
 	private LocalDate start_date;
 	
 	public EmployeePayrollData(int emp_id, String name, String gender , double salary, LocalDate start) {
-		this(name,gender,salary,start);
+		this.name = name;
+		this.gender = gender;
+		this.salary = salary;
+		this.start_date = start_date;
 		this.emp_id = emp_id;
 	}
 	
-	public EmployeePayrollData(String name, String gender, double salary, LocalDate start_date) {
+	public EmployeePayrollData(String name, String gender, double salary, LocalDate start_date , int company_id) {
 		super();
 		this.name = name;
 		this.gender = gender;
 		this.salary = salary;
 		this.start_date = start_date;
+		this.company_id = company_id;
 	}
 
 
-	public EmployeePayrollData(int emp_id, String name, String gender, double salary, LocalDate start, int id,
-			double basic_pay, double deductions, double taxable_pay, double tax, double net_pay) {
+	public EmployeePayrollData(int emp_id, String name, String gender, double salary, LocalDate start,int company_id, int id,
+			double basic_pay, double deductions, double taxable_pay, double tax, double net_pay,int emp_id2,String dept_name) {
 		this(emp_id,name,gender,salary,start);
 		this.id = id;
 		this.basic_pay = basic_pay;
@@ -38,7 +45,8 @@ public class EmployeePayrollData {
 		this.taxable_pay = taxable_pay;
 		this.tax = tax;
 		this.net_pay = net_pay;
-		
+		this.company_id = company_id;
+		this.dept_name = dept_name;
 		
 	}
 
@@ -111,8 +119,5 @@ public class EmployeePayrollData {
 			return false;
 		return true;
 	}
-
-	
-	
 	
 }
