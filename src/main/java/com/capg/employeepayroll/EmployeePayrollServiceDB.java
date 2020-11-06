@@ -213,7 +213,7 @@ public class EmployeePayrollServiceDB {
 		catch (SQLException e) {
 			e.printStackTrace();
 		}
-		String query = String.format("insert into Employee_Payroll(name , gender, salary , start_date,company_id)" + 
+		String query = String.format("insert into Employee_Payroll(name , gender, salary ,start,company_id)" + 
 									"values ('%s','%s','%s','%s','%s');",name,gender,salary,Date.valueOf(start_date),company_id);
 		try(Statement statement = con.createStatement()) {
 			
@@ -227,12 +227,10 @@ public class EmployeePayrollServiceDB {
 			viewEmployeePayroll().add(empDataObj);
 			}
 		}catch (SQLException e) {
-			e.printStackTrace();
 		try {
 			con.rollback();
 			return viewEmployeePayroll();
 		}catch (SQLException e1) {
-			e1.printStackTrace();
 		}
 	}
 		try (Statement statement = con.createStatement()) {
@@ -361,9 +359,38 @@ public class EmployeePayrollServiceDB {
 				Thread.sleep(100);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
+				}
 			}
 		}
 	}
+	/**
+	 *MultiThreading_UC5
+	 */
+	public void addEmployeeToPayrollDetailsUsingThreads(List<EmployeePayrollData> EmpList) throws DBServiceException{
+		Map<Integer,Boolean> addStatus = new HashMap<>();
+		for (EmployeePayrollData employeeObj : EmpList) {
+				
+		Runnable task = ()->{
+			addStatus.put(employeeObj.hashCode(),false);
+			try {
+				this.insertNewEmployeeToDB(employeeObj.getName(),employeeObj.getGender(),employeeObj.getSalary(),
+										   employeeObj.getStart_date(),employeeObj.getCompany_id(),employeeObj.getDept_name());
+			} catch (DBServiceException e) {
+			}
+			addStatus.put(employeeObj.hashCode(),true);
+		};
+		//Multi_Threading for each object
+		Thread thread=new Thread(task,employeeObj.getName());
+		thread.start();
+		while(addStatus.containsValue(false)) {
+			try {
+				Thread.sleep(100);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+				}
+			}
+		}
 	}
+	
 }
 

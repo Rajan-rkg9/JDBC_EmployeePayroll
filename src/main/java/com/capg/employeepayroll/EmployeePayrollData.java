@@ -40,8 +40,16 @@ public class EmployeePayrollData {
 		this.start_date = start_date;
 		this.company_id = company_id;
 	}
-
-
+	public EmployeePayrollData(String name, String gender, double salary, LocalDate start_date , int company_id,String dept) {
+		super();
+		this.name = name;
+		this.gender = gender;
+		this.salary = salary;
+		this.start_date = start_date;
+		this.company_id = company_id;
+		this.dept_name = dept;
+	}
+	
 	public EmployeePayrollData(int emp_id, String name, String gender, double salary, LocalDate start,int company_id, int id,
 			double basic_pay, double deductions, double taxable_pay, double tax, double net_pay,int emp_id2,String dept_name) {
 		this(emp_id,name,gender,salary,start);
@@ -56,6 +64,10 @@ public class EmployeePayrollData {
 		
 	}
 
+	public EmployeePayrollData(String name, double salary) {
+		this.name = name;
+		this.salary = salary;
+	}
 	public int getEmp_id() {
 		return emp_id;
 	}
@@ -88,7 +100,19 @@ public class EmployeePayrollData {
 	public void setStart_date(LocalDate start_date) {
 		this.start_date = start_date;
 	}
-
+	
+	public int getCompany_id() {
+		return company_id;
+	}
+	public void setCompany_id(int company_id) {
+		this.company_id = company_id;
+	}
+	public String getDept_name() {
+		return dept_name;
+	}
+	public void setDept_name(String dept_name) {
+		this.dept_name = dept_name;
+	}
 	@Override
 	public String toString() {
 		return "EmployeePayrollData [emp_id=" + emp_id + ", name=" + name + ", gender=" + gender + ", salary=" + salary
