@@ -363,7 +363,34 @@ public class EmployeePayrollServiceDB {
 				e.printStackTrace();
 			}
 		}
+	  }
 	}
-	}
+	/**
+	 * MultiThreading_UC6
+	 * */
+	public void updateEmployeeDataUsingThreads(List<EmployeePayrollData> EmpList) {
+		Map<Integer,Boolean> addStatus = new HashMap<>();
+		for (EmployeePayrollData employeeObj : EmpList) 
+		{
+		Runnable task = ()->{
+			addStatus.put(employeeObj.hashCode(),false);
+			try {
+				this.updateEmployeeSalaryUsingPreparedStatement(employeeObj.getName(),employeeObj.getSalary());
+			} catch (DBServiceException e) {
+			}
+			addStatus.put(employeeObj.hashCode(),true);
+		};
+		Thread thread=new Thread(task,employeeObj.getName());
+		thread.start();
+		while(addStatus.containsValue(false))
+		{
+			try {
+				Thread.sleep(100);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+	  }
+   }
 }
 

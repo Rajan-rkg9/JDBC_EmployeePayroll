@@ -56,6 +56,10 @@ public class EmployeePayrollData {
 		
 	}
 
+	public EmployeePayrollData(String name, double salary) {
+		this.salary = salary;
+		this.name= name;
+	}
 	public int getEmp_id() {
 		return emp_id;
 	}
