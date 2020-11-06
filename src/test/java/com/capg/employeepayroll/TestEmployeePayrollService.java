@@ -3,8 +3,10 @@ package com.capg.employeepayroll;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
+import java.time.Instant;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -99,11 +101,25 @@ public class TestEmployeePayrollService {
 		boolean isSynced = serviceObj.isEmpPayrollSyncedWithDB("Mark");
 		assertTrue(isSynced);
 	}
-	
+	@Ignore
 	@Test
 	public void givenEmployeeId_WhenDeletedUsing_ShouldSyncWithDB() throws DBServiceException {
 		serviceObj.removeEmployeeFromDB(2);
-		assertEquals(2,empPayrollList.size());
-		
+		assertEquals(2,empPayrollList.size());	
+	}
+	@Test
+	public void givenEmployeeData_ShouldPrintInstanceTime_ToConsole() throws DBServiceException {
+		EmployeePayrollData[] arrayOfEmp = {
+				new EmployeePayrollData("Jeff Bezos","M", 100000.0, LocalDate.now()),
+				new EmployeePayrollData("Bill Gates","M", 200000.0, LocalDate.now()),
+				new EmployeePayrollData("Mark Zuckerberg","M", 300000.0, LocalDate.now()),
+				new EmployeePayrollData("Sundar","M", 600000.0, LocalDate.now()),
+				new EmployeePayrollData("Mukesh","M", 500000.0, LocalDate.now()),
+				new EmployeePayrollData("Anil","M", 300000.0, LocalDate.now())
+		};
+		Instant start = Instant.now();
+		serviceObj.addEmployeeToPayroll(Arrays.asList(arrayOfEmp));
+		Instant end = Instant.now();
+		System.out.println("Duration Without Thread: "+java.time.Duration.between(start, end));
 	}
 }
