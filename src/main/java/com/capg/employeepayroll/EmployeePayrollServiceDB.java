@@ -362,7 +362,7 @@ public class EmployeePayrollServiceDB {
 				}
 			}
 		}
-	}
+	  }
 	/**
 	 *MultiThreading_UC5
 	 */
@@ -374,15 +374,32 @@ public class EmployeePayrollServiceDB {
 			addStatus.put(employeeObj.hashCode(),false);
 			try {
 				this.insertNewEmployeeToDB(employeeObj.getName(),employeeObj.getGender(),employeeObj.getSalary(),
-										   employeeObj.getStart_date(),employeeObj.getCompany_id(),employeeObj.getDept_name());
+										   employeeObj.getStart_date());
+			}catch (Exception e) {
+			}
+		};
+		}
+	}
+	/*
+	 * MultiThreading_UC6
+	 * */
+	public void updateEmployeeDataUsingThreads(List<EmployeePayrollData> EmpList) {
+		Map<Integer,Boolean> addStatus = new HashMap<>();
+		for (EmployeePayrollData employeeObj : EmpList) 
+		{
+		Runnable task = ()->{
+			addStatus.put(employeeObj.hashCode(),false);
+			try {
+				this.updateEmployeeSalaryUsingPreparedStatement(employeeObj.getName(),employeeObj.getSalary());
 			} catch (DBServiceException e) {
 			}
 			addStatus.put(employeeObj.hashCode(),true);
 		};
 		//Multi_Threading for each object
-		Thread thread=new Thread(task,employeeObj.getName());
-		thread.start();
-		while(addStatus.containsValue(false)) {
+				Thread thread=new Thread(task,employeeObj.getName());
+				thread.start();
+		while(addStatus.containsValue(false))
+		{
 			try {
 				Thread.sleep(100);
 			} catch (InterruptedException e) {
@@ -391,6 +408,5 @@ public class EmployeePayrollServiceDB {
 			}
 		}
 	}
-	
 }
 
