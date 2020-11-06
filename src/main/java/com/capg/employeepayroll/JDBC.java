@@ -8,11 +8,13 @@ public class JDBC {
 	static String userName = "root";
 	static String password = "RajanRKG@0909";
 	private static Connection con = null;
+	private static int connectionCount = 1;
 	
 	/**
 	 * UC1
+	 * MultiThreading UC3 
 	 */
-	public static Connection getConnection()
+	public synchronized static Connection getConnection()
 	{
 		try {
 			//Driver Loading
@@ -23,6 +25,7 @@ public class JDBC {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		connectionCount ++;
 		return con;
 	}
 }
