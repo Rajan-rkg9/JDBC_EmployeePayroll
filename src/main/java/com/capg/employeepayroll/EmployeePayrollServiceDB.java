@@ -353,7 +353,8 @@ public class EmployeePayrollServiceDB {
 			}
 			addStatus.put(employeeObj.hashCode(),true);
 		};
-		Thread thread=new Thread(task);
+		//Multi_Threading for each object
+		Thread thread=new Thread(task,employeeObj.getName());
 		thread.start();
 		while(addStatus.containsValue(false)) {
 			try {
